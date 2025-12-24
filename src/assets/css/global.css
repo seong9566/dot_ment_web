@@ -1,0 +1,112 @@
+/* 웹의 전역 CSS */
+
+/* src/assets/css/global.css */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter/Inter_24pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter/Inter_24pt-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter/Inter_24pt-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+:root {
+    --app-max-width: 480px;
+
+    /* Primary Colors */
+    --primary: #8800BB;
+    --on-primary: #F8E8F8;
+
+    /* Primary Scale */
+    --primary-100: #F2D9FF;
+    --primary-200: #E6C2FF;
+    --primary-300: #D9A1F2;
+    --primary-400: #CC80E5;
+    --primary-500: #BB66DD;
+    --primary-600: #AA33CC;
+
+    /* Background Colors */
+    --background: #F8F5F8;
+    --surface: #FFFFFF;
+
+    /* Text Colors */
+    --text-primary: #4A4A4A;
+    --text-on-primary-container: #FAFAF7;
+    --text-secondary: #757575;
+    --text-disabled: #929292;
+
+    /* Semantic Colors */
+    --error: #FF4F4F;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* Neutral Colors */
+    --divider: #E0E0E0;
+    --border: #E0E0E0;
+
+    /* Typography Sizes */
+    --fs-32: 32px;
+    --fs-24: 24px;
+    --fs-20: 20px;
+    --fs-16: 16px;
+    --fs-12: 12px;
+    --fs-8: 8px;
+
+    /* Spacing */
+    --p-screen: 20px;
+    --s-8: 8px;
+    --s-12: 12px;
+    --s-32: 32px;
+    --s-40: 40px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#container {
+    width: 100%;
+    max-width: var(--app-max-width);
+    min-height: 100vh;
+    background-color: var(--surface);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+* {
+    box-sizing: border-box;
+}

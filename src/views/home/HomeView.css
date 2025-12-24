@@ -1,0 +1,274 @@
+.home-view {
+    width: 100%;
+    display: flex;
+    /* 컨텐츠 영역 Column 배치 , 기본 Row 배치 */
+    flex-direction: column;
+}
+
+/* 트레이너 이름 및 아이콘 */
+.name-icon-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* 좌우 패딩 20 */
+    padding: 0 var(--p-screen);
+    background-color: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-title {
+    font-size: var(--fs-24);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn-purple {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Nav Tabs */
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    /* 중앙 정렬 */
+    gap: 20px;
+    /* 아이템 사이 간격 20px */
+    height: 48px;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--surface);
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+}
+
+.tab-item {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 800;
+    color: black;
+    cursor: pointer;
+    position: relative;
+    /* 텍스트 변화 하는 속도 */
+    /* transition: all 0.2s; */
+    padding: 0 10px;
+    /* 좌우 padding으로 클릭 영역 확보 */
+}
+
+/* 탭 아이템 눌렀을 경우  */
+.tab-item.active {
+    color: #D32F2F;
+    /* 이미지에서 '홈'이 붉은색계열임 */
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+}
+
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-32);
+}
+
+.tab-content.empty {
+    padding: 100px 20px;
+    text-align: center;
+    color: var(--text-disabled);
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--s-40) var(--p-screen);
+    background: rgba(0, 0, 0, 0.3);
+    /* 전체적으로 살짝 어둡게 하여 글자 가독성 확보 */
+    color: #ffffff;
+    /* 앙방향 중앙 정렬을 위한 Flex 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 세로 중앙 정렬 */
+    align-items: center;
+    /* 가로 중앙 정렬 */
+    text-align: center;
+}
+
+.hero-title {
+    /*  중앙 정렬 */
+    text-align: center;
+    font-size: var(--fs-32);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.underline-text {
+    border-bottom: 1px solid white;
+    margin-bottom: 4px;
+}
+
+.hero-desc {
+    display: block;
+    font-size: var(--fs-16);
+    font-weight: 900;
+    line-height: 1.5;
+    color: white;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.apply-btn {
+    align-items: center;
+    background-color: #b3261e;
+    /* 이미지 상의 어두운 빨강 */
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: var(--fs-16);
+    font-weight: 900;
+    display: inline-flex;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.float-setting {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--primary-100);
+    cursor: pointer;
+}
+
+/* Profile Section */
+.profile-info {
+    padding: 0 var(--p-screen);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-32);
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.info-title {
+    font-size: var(--fs-20);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text-primary);
+    max-width: 80%;
+}
+
+.info-title span {
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+/* Internal Tabs */
+.internal-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.sub-tab-item {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    font-size: var(--fs-16);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.sub-tab-item.active {
+    background-color: #b3261e;
+    color: #ffffff;
+    border-color: #b3261e;
+}
+
+.sub-tab-content {
+    text-align: center;
+    padding: var(--s-12) 0;
+}
+
+.stat-title {
+    font-size: var(--fs-24);
+    font-weight: 700;
+    margin-bottom: var(--s-12);
+}
+
+.stat-desc {
+    font-size: var(--fs-12);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* Gallery */
+.gallery {
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.gallery-image {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
