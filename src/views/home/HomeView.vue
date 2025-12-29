@@ -75,30 +75,152 @@
           </div>
 
           <div class="sub-tab-content">
-            <h4 class="stat-title">{{ activeSubTab === 'career' ? '8년, 312명' : activeSubTab === 'knowhow' ? '차별화된 티칭' : '함께하는 성장' }}</h4>
-            <p class="stat-desc">
-              {{ activeSubTab === 'career' 
-                ? '긴 시간 동안 많은 회원들을 만나며\n312번의 경력을 탄탄히 다졌습니다.' 
-                : '당신만을 위한 맞춤형 루틴과\n식단 관리를 제공합니다.' 
-              }}
-            </p>
-          </div>
-        </section>
+            <!-- 경력 탭 컨텐츠 -->
+            <div v-if="activeSubTab === 'career'" class="career-content">
+              <p class="stat-title">8년, 312명</p>
+              <p class="stat-desc">
+                긴 시간 동안 많은 회원들을 만나며<br>
+                312번의 경력을 탄탄히 다졌습니다.
+              </p>
+              <div class="sub-tab-image-container career">
+                <img src="https://picsum.photos/480/500?random=2" alt="Career" class="sub-tab-image">
+              </div>
+            </div> 
 
-        <!-- Gallery Section -->
-        <section class="gallery">
-          <img src="https://picsum.photos/480/500?random=2" alt="Gallery" class="gallery-image">
+            <!-- 노하우 탭 컨텐츠 -->
+            <div v-else-if="activeSubTab === 'knowhow'" class="knowhow-content">
+              <div class="sub-tab-row">  
+                <div class="sub-tab-image-container side">
+                  <img src="https://picsum.photos/300/400?random=3" alt="Knowhow" class="sub-tab-image rounded">
+                </div>
+                <p class="stat-desc align-left">
+                  근육은 풍선이 아닙니다.<br>
+                  안정적이고, 점진적인<br>
+                  근육량 증가를<br>
+                  위해서는 내제적인<br>
+                  건강이 우선입니다.
+                </p>
+              </div>
+            </div>
+
+            <!-- 비전 탭 컨텐츠 -->
+            <div v-else-if="activeSubTab === 'vision'" class="vision-content">
+              <div class="sub-tab-image-container full">
+                <img src="https://picsum.photos/480/300?random=4" alt="Vision" class="sub-tab-image">
+              </div>
+              <p class="stat-desc align-left">
+                회원님에게 알맞는 프로그램 설계를 시작으로,<br>
+                회원님의 성장에 따라 프로그램도 재설계 되며<br>
+                회원님의 목적지까지 늘 새로운 경험을 약속합니다.
+              </p>
+            </div>
+          </div>
         </section>
       </div>
 
       <!-- PT Goods Tab -->
-      <div v-else-if="activeTab === 'pt'" class="tab-content empty">
-        <p>PT 상품 정보를 준비 중입니다.</p>
+      <div v-else-if="activeTab === 'pt'" class="tab-content pt-goods-tab">
+        <!-- PT Section -->
+        <section class="goods-section">
+          <div class="section-header">
+            <h2 class="section-title">PT</h2>
+            <button class="view-all-btn">
+              전체 보기
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+          <div class="goods-list">
+            <div v-for="i in 3" :key="'pt-'+i" class="goods-item">
+              <div class="goods-image-container">
+                <img :src="`https://picsum.photos/436/464?random=pt${i}`" alt="PT Goods" class="goods-image">
+              </div>
+              <div class="goods-info">
+                <h4 class="goods-name">PT {{ i * 10 }}회</h4>
+                <p class="goods-desc">상품 상세 설명</p>
+                <p class="goods-price">가격</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- GYM Section -->
+        <section class="goods-section">
+          <div class="section-header">
+            <h2 class="section-title">GYM</h2>
+            <button class="view-all-btn">
+              전체 보기
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+          <div class="goods-list">
+            <div v-for="i in 3" :key="'gym-'+i" class="goods-item">
+              <div class="goods-image-container">
+                <img :src="`https://picsum.photos/436/464?random=gym${i}`" alt="GYM Goods" class="goods-image">
+              </div> 
+              <div class="goods-info">
+                <h4 class="goods-name">상품 제목</h4>
+                <p class="goods-desc">상품 상세 설명</p>
+                <p class="goods-price">가격</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- Schedule Tab -->
-      <div v-else-if="activeTab === 'schedule'" class="tab-content empty">
-        <p>수업 일정 정보를 준비 중입니다.</p>
+      <div v-else-if="activeTab === 'schedule'" class="tab-content schedule-tab">
+        <div class="section-header">
+          <h2 class="section-title">회원님께 맞는 솔루션 선택하기</h2>
+          <button class="view-all-btn">
+            더보기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </div>
+
+        <div class="solution-list">
+          <div v-for="i in 2" :key="'solution-'+i" class="solution-card">
+            <div class="card-header">
+              <h3 class="solution-name">헬스 + PT 10회</h3>
+              <p class="solution-subtitle">PT만 하면 뭐해~<br>헬스장에서 개인 운동까지!</p>
+            </div>
+            
+            <ul class="feature-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                전체 수입 운동기구 구비 완료
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                샤워장 구비 완료
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                할 말이 없네
+              </li>
+              <li class="highlight">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                맞춤형 식사 습관 연습
+              </li>
+              <li class="highlight">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                처음 운동하는 사람도 기초를 다질 수 있는 기본 솔루션!
+              </li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <div class="card-footer">
+              <p class="solution-price">₩250,000 원</p>
+              <div class="button-group">
+                <button class="btn-primary">결제하기</button>
+                <button class="btn-text">
+                  더 알아보기
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
