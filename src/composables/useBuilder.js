@@ -76,8 +76,8 @@ export function useBuilder() {
         store.setBlocks(newBlocks)
     }
 
-    function reorderBlocks(pageId, oldIndex, newIndex) {
-        store.reorderBlocks(pageId, oldIndex, newIndex)
+    function reorderBlocks(pageId, tabId, oldIndex, newIndex) {
+        store.reorderBlocks(pageId, tabId, oldIndex, newIndex)
     }
 
     return {

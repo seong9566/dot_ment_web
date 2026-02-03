@@ -6,7 +6,7 @@ import { useBuilder } from '@/composables/useBuilder'
 import { storeToRefs } from 'pinia'
 
 const store = useBuilderStore()
-const { siteStructure, currentTabId, currentPageId } = storeToRefs(store)
+const { siteStructure, currentPageId, currentTabId, currentPage } = storeToRefs(store)
 const { addBlock } = useBuilder()
 
 const availableBlocks = getAvailableBlocks()
@@ -14,8 +14,8 @@ const availableBlocks = getAvailableBlocks()
 const handleAddPage = () => {
   const newPageName = prompt('페이지 이름을 입력하세요:')
   if (newPageName) {
-    const newPageId = store.addPage(currentTabId.value, newPageName)
-    currentPageId.value = newPageId
+    const newPageId = store.addPage(newPageName)
+    store.setActivePage(newPageId)
   }
 }
 </script>
@@ -31,29 +31,32 @@ const handleAddPage = () => {
     <!-- 사이트 구조 관리 -->
     <div class="sidebar__section">
       <h3>사이트 구조</h3>
-      <div class="sidebar__tabs-nav">
-        <button 
-          v-for="tab in siteStructure" 
-          :key="tab.id"
-          class="nav-btn"
-          :class="{ active: currentTabId === tab.id }"
-          @click="currentTabId = tab.id; currentPageId = tab.pages[0]?.id"
-        >
-          {{ tab.label }}
-        </button>
-      </div>
-      
       <div class="sidebar__pages-list">
         <div 
-          v-for="page in store.currentTab?.pages" 
+          v-for="page in siteStructure" 
           :key="page.id"
           class="page-item"
           :class="{ active: currentPageId === page.id }"
-          @click="currentPageId = page.id"
+          @click="store.setActivePage(page.id)"
         >
           📄 {{ page.name }}
         </div>
         <button class="add-page-btn" @click="handleAddPage">+ 페이지 추가</button>
+      </div>
+
+      <div v-if="currentPage?.tabs?.length" class="sidebar__tabs-nav">
+        <button 
+          v-for="tab in currentPage.tabs" 
+          :key="tab.id"
+          class="nav-btn"
+          :class="{ active: currentTabId === tab.id }"
+          @click="store.setActiveTab(tab.id)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+      <div v-else class="sidebar__placeholder">
+        탭을 추가해 주세요.
       </div>
     </div>
 
@@ -117,6 +120,7 @@ const handleAddPage = () => {
   border-radius: 8px;
   padding: 4px;
   margin-bottom: 12px;
+  margin-top: 16px;
 }
 
 .nav-btn {
@@ -171,6 +175,16 @@ const handleAddPage = () => {
   font-size: 0.75rem;
   color: #666;
   cursor: pointer;
+}
+
+.sidebar__placeholder {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 12px;
 }
 
 .sidebar__block-grid {

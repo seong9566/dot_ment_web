@@ -4,16 +4,16 @@ import { ref, computed } from 'vue'
 export const useBuilderStore = defineStore('builder', () => {
     /**
      * 전체 사이트 구조
-     * tabs: [{ id, label, pages: [{ id, name, blocks: [] }] }]
+     * pages: [{ id, name, tabs: [{ id, label, blocks: [] }] }]
      */
     const siteStructure = ref([
         {
-            id: 'tab-home',
-            label: '홈',
-            pages: [
+            id: 'page-home-main',
+            name: '메인 홈',
+            tabs: [
                 {
-                    id: 'page-home-main',
-                    name: '메인 홈',
+                    id: 'home',
+                    label: '홈',
                     blocks: [
                         {
                             id: 'initial-hero',
@@ -51,16 +51,10 @@ export const useBuilderStore = defineStore('builder', () => {
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            id: 'tab-pt',
-            label: 'PT 상품',
-            pages: [
+                },
                 {
-                    id: 'page-pt-main',
-                    name: 'PT 목록',
+                    id: 'pt',
+                    label: 'PT 상품',
                     blocks: [
                         {
                             id: 'initial-pt-list',
@@ -89,16 +83,10 @@ export const useBuilderStore = defineStore('builder', () => {
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            id: 'tab-schedule',
-            label: '수업 일정',
-            pages: [
+                },
                 {
-                    id: 'page-schedule-main',
-                    name: '수업 예약',
+                    id: 'schedule',
+                    label: '수업 일정',
                     blocks: [
                         {
                             id: 'initial-solution-cards',
@@ -125,6 +113,27 @@ export const useBuilderStore = defineStore('builder', () => {
                     ]
                 }
             ]
+        },
+        {
+            id: 'page-second',
+            name: '두번째 페이지',
+            tabs: [
+                {
+                    id: 'tab-1',
+                    label: '탭1',
+                    blocks: []
+                },
+                {
+                    id: 'tab-2',
+                    label: '탭2',
+                    blocks: []
+                },
+                {
+                    id: 'tab-3',
+                    label: '탭3',
+                    blocks: []
+                }
+            ]
         }
     ])
 
@@ -133,8 +142,8 @@ export const useBuilderStore = defineStore('builder', () => {
         logoUrl: null
     })
 
-    const currentTabId = ref('tab-home')
     const currentPageId = ref('page-home-main')
+    const currentTabId = ref('home')
     const selectedBlockId = ref(null)
 
     // Undo/Redo (전체 사이트 구조 스냅샷)
@@ -142,19 +151,20 @@ export const useBuilderStore = defineStore('builder', () => {
     const historyIndex = ref(-1)
 
     // Getters
-    const currentTab = computed(() => siteStructure.value.find(t => t.id === currentTabId.value))
     const currentPage = computed(() => {
-        if (!currentTab.value) return null
-        return currentTab.value.pages.find(p => p.id === currentPageId.value)
+        return siteStructure.value.find(page => page.id === currentPageId.value) || null
     })
-    const blocks = computed(() => currentPage.value?.blocks || [])
+    const currentTab = computed(() => {
+        if (!currentPage.value) return null
+        return currentPage.value.tabs.find(tab => tab.id === currentTabId.value) || null
+    })
+    const blocks = computed(() => currentTab.value?.blocks || [])
 
     // Actions
     function setBlocks(newBlocks) {
-        if (currentPage.value) {
-            currentPage.value.blocks = newBlocks
-            recordHistory()
-        }
+        if (!currentTab.value) return
+        currentTab.value.blocks = newBlocks
+        recordHistory()
     }
 
     function recordHistory() {
@@ -191,14 +201,11 @@ export const useBuilderStore = defineStore('builder', () => {
         }
     }
 
-    function addPage(tabId, name) {
-        const tab = siteStructure.value.find(t => t.id === tabId)
-        if (tab) {
-            const newPage = { id: `page-${Date.now()}`, name, blocks: [] }
-            tab.pages.push(newPage)
-            recordHistory()
-            return newPage.id
-        }
+    function addPage(name) {
+        const newPage = { id: `page-${Date.now()}`, name, tabs: [] }
+        siteStructure.value.push(newPage)
+        recordHistory()
+        return newPage.id
     }
 
     function updateSettings(newSettings) {
@@ -206,30 +213,74 @@ export const useBuilderStore = defineStore('builder', () => {
         recordHistory()
     }
 
-    function moveBlockInternal(pageId, blockId, direction) {
-        const page = siteStructure.value.flatMap(t => t.pages).find(p => p.id === pageId)
-        if (!page) return
+    function addTab(label = '새 탭') {
+        if (!currentPage.value) return
+        const newTabId = `tab-${Date.now()}`
+        currentPage.value.tabs.push({ id: newTabId, label, blocks: [] })
+        setActiveTab(newTabId)
+        recordHistory()
+    }
 
-        const index = page.blocks.findIndex(b => b.id === blockId)
+    function updateTabLabel(tabId, label) {
+        if (!currentPage.value) return
+        currentPage.value.tabs = currentPage.value.tabs.map(tab => tab.id === tabId ? { ...tab, label } : tab)
+        recordHistory()
+    }
+
+    function removeTab(tabId) {
+        if (!currentPage.value) return
+        currentPage.value.tabs = currentPage.value.tabs.filter(tab => tab.id !== tabId)
+        const nextActive = currentPage.value.tabs[0]?.id || null
+        if (nextActive) {
+            setActiveTab(nextActive)
+        } else {
+            currentTabId.value = null
+        }
+        recordHistory()
+    }
+
+    function setActivePage(pageId) {
+        const targetPage = siteStructure.value.find(page => page.id === pageId)
+        if (!targetPage) return
+        currentPageId.value = pageId
+        currentTabId.value = targetPage.tabs[0]?.id || null
+    }
+
+    function setActiveTab(tabId) {
+        if (!currentPage.value) return
+        const exists = currentPage.value.tabs.find(tab => tab.id === tabId)
+        if (!exists) return
+        currentTabId.value = tabId
+    }
+
+    function moveBlockInternal(pageId, tabId, blockId, direction) {
+        const page = siteStructure.value.find(p => p.id === pageId)
+        if (!page) return
+        const tab = page.tabs.find(t => t.id === tabId)
+        if (!tab) return
+
+        const index = tab.blocks.findIndex(b => b.id === blockId)
         if (index === -1) return
 
         const newIndex = direction === 'up' ? index - 1 : index + 1
-        if (newIndex >= 0 && newIndex < page.blocks.length) {
-            const blocks = [...page.blocks]
+        if (newIndex >= 0 && newIndex < tab.blocks.length) {
+            const blocks = [...tab.blocks]
                 ;[blocks[index], blocks[newIndex]] = [blocks[newIndex], blocks[index]]
-            page.blocks = blocks
+            tab.blocks = blocks
             recordHistory()
         }
     }
 
-    function reorderBlocks(pageId, oldIndex, newIndex) {
-        const page = siteStructure.value.flatMap(t => t.pages).find(p => p.id === pageId)
+    function reorderBlocks(pageId, tabId, oldIndex, newIndex) {
+        const page = siteStructure.value.find(p => p.id === pageId)
         if (!page) return
+        const tab = page.tabs.find(t => t.id === tabId)
+        if (!tab) return
 
-        const blocks = [...page.blocks]
+        const blocks = [...tab.blocks]
         const [movedBlock] = blocks.splice(oldIndex, 1)
         blocks.splice(newIndex, 0, movedBlock)
-        page.blocks = blocks
+        tab.blocks = blocks
         recordHistory()
     }
 
@@ -247,6 +298,11 @@ export const useBuilderStore = defineStore('builder', () => {
         redo,
         addPage,
         updateSettings,
+        addTab,
+        updateTabLabel,
+        removeTab,
+        setActivePage,
+        setActiveTab,
         moveBlockInternal,
         reorderBlocks,
         canUndo: () => historyIndex.value > 0,

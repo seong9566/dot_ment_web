@@ -25,7 +25,7 @@ const onDragOver = (e) => {
 
 const onDrop = (index) => {
   if (dragIndex.value !== null && dragIndex.value !== index) {
-    reorderBlocks(store.currentPageId, dragIndex.value, index)
+    reorderBlocks(store.currentPageId, store.currentTabId, dragIndex.value, index)
   }
   dragIndex.value = null
 }
@@ -84,18 +84,18 @@ const onDrop = (index) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 0;
   overflow: auto;
   background-color: #f1f3f5;
 }
 
 .mobile-frame {
-  width: 430px; /* iPhone 15 Pro Max width approximately */
-  height: 932px;
+  width: 100%;
+  height: 100%;
   background-color: white;
-  border-radius: 50px;
-  border: 12px solid #111;
-  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.25);
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -103,22 +103,15 @@ const onDrop = (index) => {
 }
 
 .mobile-frame__notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 35px;
-  background-color: #111;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  z-index: 100;
+  display: none;
 }
 
 .mobile-frame__content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
+  padding-right: 72px;
 }
 
 .mobile-frame__content::-webkit-scrollbar {
@@ -141,6 +134,7 @@ const onDrop = (index) => {
   transition: opacity 0.2s ease;
   cursor: pointer;
   border: 2px solid transparent;
+  padding-right: 60px;
 }
 
 .canvas__item-wrapper.is-dragging {
@@ -155,7 +149,7 @@ const onDrop = (index) => {
 .canvas__controls {
   position: absolute;
   top: 0;
-  right: -50px;
+  right: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -194,18 +188,10 @@ const onDrop = (index) => {
 /* Response for actual mobile view env */
 @media (max-width: 768px) {
   .canvas-container {
-    padding: 0;
     background-color: white;
   }
   .mobile-frame {
-    width: 100%;
     height: 100vh;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-  .mobile-frame__notch {
-    display: none;
   }
   .canvas__controls {
     right: 10px;
